@@ -10,25 +10,23 @@
     body {
       font-family: 'Pretendard', sans-serif;
       background: #f4f4f4; color: #222;
-      width: 100vw; height: 100vh;
-      overflow-x: auto; overflow-y: hidden;
-      display: flex;
+      width: 100%;
+      margin: 0;
+      overflow-x: hidden;
     }
     .page {
-      min-width: 100vw;
-      height: 100vh;
-      flex-shrink: 0;
+      width: 100%;
+      max-width: 1000px;
+      margin: 40px auto;
       padding: 40px;
       background: #fff;
-      margin: 10px;
       box-shadow: 0 0 8px rgba(0,0,0,0.05);
       border: 1px solid #ccc;
-      overflow-y: auto;
     }
     h1, h2 { margin-bottom: 20px; color: #111; }
     h1 { font-size: 2.5rem; }
     h2 { font-size: 1.8rem; border-bottom: 2px solid #ccc; padding-bottom: 8px; }
-    p { font-size: 1rem; margin-bottom: 1em; }
+    p { font-size: 1rem; margin-bottom: 1em; line-height: 1.6; white-space: pre-line; }
     ul { margin-left: 20px; }
     table {
       width: 100%;
@@ -45,6 +43,14 @@
     .map-container {
       width: 100%; height: 500px; margin-top: 20px; border: 1px solid #ccc;
     }
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
     .cover h1 { font-size: 3rem; }
     .cover p { font-size: 1.2rem; color: #666; margin-top: 1rem; }
     canvas {
@@ -58,9 +64,13 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c&autoload=false"></script>
 </head>
 <body>
+  <section class="page cover">
+    <h1>제주 부동산 입지 보고서</h1>
+    <p>시장 동향, 필지 분석, 투자 방안 제안</p>
+  </section>
 
   <section class="page">
     <h2>1. 제주 부동산 시장 현황</h2>
@@ -115,6 +125,36 @@
   </section>
 
   <script>
+    kakao.maps.load(() => {
+      var map = new kakao.maps.Map(document.getElementById('map'), {
+        center: new kakao.maps.LatLng(33.448, 126.33),
+        level: 9
+      });
+
+      var positions = [
+        { title: '신엄리 2891-3', lat: 33.47676, lng: 126.35803 },
+        { title: '신엄리 2831', lat: 33.47445, lng: 126.35407 },
+        { title: '곽지리 791-4', lat: 33.44180, lng: 126.31541 },
+        { title: '월령리 1026', lat: 33.36672, lng: 126.22659 },
+        { title: '판포리 1589', lat: 33.36909, lng: 126.20766 },
+        { title: '북촌리 637-1', lat: 33.54789, lng: 126.69489 },
+        { title: '세화리 2416', lat: 33.32685, lng: 126.78393 }
+      ];
+
+      positions.forEach(pos => {
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(pos.lat, pos.lng)
+        });
+        var infowindow = new kakao.maps.InfoWindow({
+          content: '<div style="padding:10px;font-size:15px;">' + pos.title + '</div>'
+        });
+        kakao.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+        });
+      });
+    });
+
     new Chart(document.getElementById('priceChart'), {
       type: 'line',
       data: {
@@ -142,34 +182,6 @@
         maintainAspectRatio: false,
         plugins: { legend: { position: 'top' } }
       }
-    });
-
-    var map = new kakao.maps.Map(document.getElementById('map'), {
-      center: new kakao.maps.LatLng(33.448, 126.33),
-      level: 9
-    });
-
-    var positions = [
-      { title: '신엄리 2891-3', lat: 33.47676, lng: 126.35803 },
-      { title: '신엄리 2831', lat: 33.47445, lng: 126.35407 },
-      { title: '곽지리 791-4', lat: 33.44180, lng: 126.31541 },
-      { title: '월령리 1026', lat: 33.36672, lng: 126.22659 },
-      { title: '판포리 1589', lat: 33.36909, lng: 126.20766 },
-      { title: '북촌리 637-1', lat: 33.54789, lng: 126.69489 },
-      { title: '세화리 2416', lat: 33.32685, lng: 126.78393 }
-    ];
-
-    positions.forEach(pos => {
-      var marker = new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(pos.lat, pos.lng)
-      });
-      var infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:10px;font-size:15px;">' + pos.title + '</div>'
-      });
-      kakao.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map, marker);
-      });
     });
   </script>
 </body>
