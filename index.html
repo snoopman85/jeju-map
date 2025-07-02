@@ -7,15 +7,27 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-    body { font-family: 'Pretendard', sans-serif; line-height: 1.8; background: #fff; color: #222; }
-    section {
-      min-height: 100vh;
-      padding: 60px 10%;
-      border-bottom: 1px solid #eee;
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #f4f4f4; color: #222;
+      width: 100vw; height: 100vh;
+      overflow-x: auto; overflow-y: hidden;
+      display: flex;
+    }
+    .page {
+      min-width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      padding: 40px;
+      background: #fff;
+      margin: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      border: 1px solid #ccc;
+      overflow-y: auto;
     }
     h1, h2 { margin-bottom: 20px; color: #111; }
     h1 { font-size: 2.5rem; }
-    h2 { font-size: 1.8rem; }
+    h2 { font-size: 1.8rem; border-bottom: 2px solid #ccc; padding-bottom: 8px; }
     p { font-size: 1rem; margin-bottom: 1em; }
     ul { margin-left: 20px; }
     table {
@@ -23,16 +35,21 @@
       border-collapse: collapse;
       margin-top: 20px;
       font-size: 1rem;
+      border: 1px solid #aaa;
     }
     th, td {
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #aaa;
       text-align: center;
     }
-    .map-container { width: 100%; height: 500px; margin-top: 20px; }
-    .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .map-container {
+      width: 100%; height: 500px; margin-top: 20px; border: 1px solid #ccc;
+    }
     .cover h1 { font-size: 3rem; }
     .cover p { font-size: 1.2rem; color: #666; margin-top: 1rem; }
+    canvas {
+      max-width: 600px; max-height: 300px; margin-top: 20px; background: #fff; border: 1px solid #ccc; padding: 10px;
+    }
     @media screen and (max-width: 768px) {
       html { font-size: 18px; }
       h1 { font-size: 2.2rem; }
@@ -45,18 +62,16 @@
 </head>
 <body>
 
-  <!-- Page 1 -->
-  <section>
-    <h2>0. 제주 부동산 시장 현황</h2>
+  <section class="page">
+    <h2>1. 제주 부동산 시장 현황</h2>
     <p>제주도는 최근 몇 년간 부동산 가격이 급등한 이후 일부 지역은 조정을 거쳤으며, 여전히 펜션 및 단독주택 투자 수요는 지속되고 있습니다.</p>
-    <canvas id="priceChart" width="600" height="300"></canvas>
+    <canvas id="priceChart"></canvas>
     <p style="margin-top: 2rem;">펜션 사업 수익률과 공실률도 제주 투자 판단의 중요한 지표입니다.</p>
-    <canvas id="pensionChart" width="600" height="300"></canvas>
+    <canvas id="pensionChart"></canvas>
   </section>
 
-  <!-- Page 2 -->
-  <section>
-    <h2>1. 대상 필지 요약</h2>
+  <section class="page">
+    <h2>2. 대상 필지 요약</h2>
     <table>
       <thead>
         <tr>
@@ -64,26 +79,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>신엄리 2891-3</td><td>791</td><td>239.3</td><td>81.0</td><td>2.2</td><td>278</td><td>갤러리</td></tr>
-        <tr><td>신엄리 2831</td><td>427</td><td>129.2</td><td>50.0</td><td>1.6</td><td>375</td><td>주택</td></tr>
-        <tr><td>곽지리 791-4</td><td>500</td><td>151.2</td><td>-</td><td>2.0</td><td>265</td><td>전망 우수</td></tr>
-        <tr><td>월령리 1026</td><td>620</td><td>187.5</td><td>-</td><td>1.8</td><td>289</td><td>-</td></tr>
-        <tr><td>판포리 1589</td><td>580</td><td>175.4</td><td>-</td><td>1.6</td><td>276</td><td>-</td></tr>
-        <tr><td>북촌리 637-1</td><td>710</td><td>214.8</td><td>-</td><td>2.3</td><td>308</td><td>-</td></tr>
-        <tr><td>세화리 2416</td><td>800</td><td>242.0</td><td>-</td><td>2.5</td><td>312</td><td>-</td></tr>
+        <tr><td>신엄리 2891-3</td><td>791</td><td>239.3</td><td>81.0</td><td>22</td><td>278</td><td>갤러리</td></tr>
+        <tr><td>신엄리 2831</td><td>427</td><td>129.2</td><td>50.0</td><td>16</td><td>375</td><td>주택</td></tr>
+        <tr><td>곽지리 791-4</td><td>500</td><td>151.2</td><td>-</td><td>20</td><td>265</td><td>전망 우수</td></tr>
+        <tr><td>월령리 1026</td><td>620</td><td>187.5</td><td>-</td><td>18</td><td>289</td><td>-</td></tr>
+        <tr><td>판포리 1589</td><td>580</td><td>175.4</td><td>-</td><td>16</td><td>276</td><td>-</td></tr>
+        <tr><td>북촌리 637-1</td><td>710</td><td>214.8</td><td>-</td><td>23</td><td>308</td><td>-</td></tr>
+        <tr><td>세화리 2416</td><td>800</td><td>242.0</td><td>-</td><td>25</td><td>312</td><td>-</td></tr>
       </tbody>
     </table>
   </section>
 
-  <!-- Page 3 -->
-  <section>
-    <h2>2. 지도 기반 입지 시각화</h2>
+  <section class="page">
+    <h2>3. 지도 기반 입지 시각화</h2>
     <div id="map" class="map-container"></div>
   </section>
 
-  <!-- Page 4 -->
-  <section>
-    <h2>3. 개발/투자 활용 방안</h2>
+  <section class="page">
+    <h2>4. 개발/투자 활용 방안</h2>
     <ul>
       <li>단독주택형 개발: 자연녹지 중심 필지</li>
       <li>상가주택형: 곽지리, 북촌리, 세화리 중심</li>
@@ -92,9 +105,8 @@
     <p>직영 건축 시 원가 절감 및 분양형 개발도 고려 가능</p>
   </section>
 
-  <!-- Page 5 -->
-  <section>
-    <h2>4. 결론 및 제안</h2>
+  <section class="page">
+    <h2>5. 결론 및 제안</h2>
     <ul>
       <li>우선 검토 대상: 신엄리 2필지 통합 개발 가능</li>
       <li>각 필지 용도 확인 및 지목 정리 필요</li>
@@ -103,22 +115,19 @@
   </section>
 
   <script>
-    // 차트 1
     new Chart(document.getElementById('priceChart'), {
       type: 'line',
       data: {
         labels: ['2020', '2021', '2022', '2023', '2024'],
-        datasets: [{
-          label: '부동산 가격지수',
-          data: [98, 105, 112, 108, 110],
-          borderColor: 'rgba(75,192,192,1)',
-          fill: false
-        }]
+        datasets: [{ label: '부동산 가격지수', data: [98, 105, 112, 108, 110], borderColor: 'rgba(75,192,192,1)', fill: false }]
       },
-      options: { responsive: true, plugins: { legend: { position: 'top' } } }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' } }
+      }
     });
 
-    // 차트 2
     new Chart(document.getElementById('pensionChart'), {
       type: 'bar',
       data: {
@@ -128,10 +137,13 @@
           { label: '공실률 (%)', data: [22, 18, 25, 27, 26], backgroundColor: 'rgba(255,99,132,0.7)' }
         ]
       },
-      options: { responsive: true, plugins: { legend: { position: 'top' } } }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' } }
+      }
     });
 
-    // 카카오맵 마커
     var map = new kakao.maps.Map(document.getElementById('map'), {
       center: new kakao.maps.LatLng(33.448, 126.33),
       level: 9
