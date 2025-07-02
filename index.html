@@ -1,76 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <title>제주 부동산 지도</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>제주 부동산 입지 보고서</title>
   <style>
-    html, body { width: 100%; height: 100%; margin: 0; }
-    #map { width: 100%; height: 100%; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', sans-serif; line-height: 1.6; background: #fff; color: #222; }
+    section {
+      min-height: 100vh;
+      padding: 60px 10%;
+      border-bottom: 1px solid #eee;
+    }
+    h1, h2 { margin-bottom: 20px; color: #111; }
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    p { font-size: 1rem; margin-bottom: 1em; }
+    ul { margin-left: 20px; }
+    .map-container { width: 100%; height: 500px; margin-top: 20px; }
+    .page-header { text-align: center; padding-top: 80px; }
+    .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .cover h1 { font-size: 3rem; }
+    .cover p { font-size: 1.2rem; color: #666; margin-top: 1rem; }
   </style>
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
 </head>
 <body>
-  <div id="map"></div>
 
-  <!-- ✅ API 키는 반드시 본인의 것으로 바꿔주세요 -->
-  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
+  <!-- Page 1: Cover -->
+  <section class="cover">
+    <h1>제주 부동산 입지 분석 보고서</h1>
+    <p>직영건축과 투자 관점에서의 가능성 진단</p>
+    <p>2025.07 | 작성자: 정선모</p>
+  </section>
+
+  <!-- Page 2: 개요 -->
+  <section>
+    <h2>1. 제주도 부동산 시장 개요</h2>
+    <p>제주도는 천혜의 자연환경과 관광자원으로 인해 주거 및 투자 수요가 꾸준히 발생하고 있는 지역입니다. 특히 제주시 서부권(애월, 한림 등)은 개발 수요가 높고 직영 건축 수요도 늘어나고 있습니다.</p>
+    <ul>
+      <li>관광+주거 복합 수요</li>
+      <li>지속적인 인프라 투자 (공항 확장, 도로망)</li>
+      <li>지역별 토지 가격 편차 큼</li>
+    </ul>
+  </section>
+
+  <!-- Page 3: 필지 정보 -->
+  <section>
+    <h2>2. 대상 필지 요약</h2>
+    <ul>
+      <li>신엄리 2891-3 (126.35803, 33.47676)</li>
+      <li>신엄리 2831 (126.35407, 33.47445)</li>
+      <li>곽지리 791-4 (126.31541, 33.44180)</li>
+      <li>월령리 1026 (126.22659, 33.36672)</li>
+      <li>판포리 1589 (126.20766, 33.36909)</li>
+      <li>북촌리 637-1 (126.69489, 33.54789)</li>
+      <li>세화리 2416 (126.78393, 33.32685)</li>
+    </ul>
+    <p>총 7필지(6개 권역)로 나뉘며, 각각 관광지 접근성 및 개발환경이 다릅니다.</p>
+  </section>
+
+  <!-- Page 4: 지도 시각화 -->
+  <section>
+    <h2>3. 지도 기반 입지 시각화</h2>
+    <div id="map" class="map-container"></div>
+  </section>
+
+  <!-- Page 5: 개발 및 투자 방안 -->
+  <section>
+    <h2>4. 개발/투자 활용 방안</h2>
+    <ul>
+      <li>단독주택형 개발: 자연녹지 지역 중심</li>
+      <li>상가주택형: 관광지 인접 필지 활용</li>
+      <li>타운하우스형: 신엄리/곽지리 클러스터 활용</li>
+    </ul>
+    <p>직영 건축 시 원가 절감 효과 및 분양형 개발 가능</p>
+  </section>
+
+  <!-- Page 6: 결론 -->
+  <section>
+    <h2>5. 결론 및 제안</h2>
+    <ul>
+      <li>최우선 검토 필지: 신엄리 2891-3 / 곽지리 791-4</li>
+      <li>개발 시나리오 수립 및 설계 의뢰 필요</li>
+      <li>조속한 권리 정리 및 지목확인 권장</li>
+    </ul>
+    <p>향후 3개월 내 세부 사업계획 수립을 권장합니다.</p>
+  </section>
 
   <script>
-    var mapContainer = document.getElementById('map');
-    var mapOption = {
+    var container = document.getElementById('map');
+    var options = {
       center: new kakao.maps.LatLng(33.448, 126.33),
       level: 9
     };
-    var map = new kakao.maps.Map(mapContainer, mapOption);
+    var map = new kakao.maps.Map(container, options);
 
-    // ✅ 마커 정보 리스트 (7개)
     var positions = [
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>신엄리 2891-3</strong><br>대지 200평<br>매매가: 5억 원</div>',
-        latlng: new kakao.maps.LatLng(33.47676, 126.35803)
-      },
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>곽지리 791-4</strong><br>전망 좋은 땅<br>매매가: 4.5억 원</div>',
-        latlng: new kakao.maps.LatLng(33.44180, 126.31541)
-      },
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>하귀리 1735-1</strong><br>2차선 인접<br>매매가: 3.2억 원</div>',
-        latlng: new kakao.maps.LatLng(33.48855, 126.41576)
-      },
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>애월리 1001</strong><br>도로접함<br>매매가: 6억 원</div>',
-        latlng: new kakao.maps.LatLng(33.45390, 126.30980)
-      },
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>곽지리 723</strong><br>바다근처<br>매매가: 5.8억 원</div>',
-        latlng: new kakao.maps.LatLng(33.44320, 126.30790)
-      },
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>하귀2리 556</strong><br>주거지 인접<br>매매가: 2.9억 원</div>',
-        latlng: new kakao.maps.LatLng(33.47912, 126.42456)
-      },
-      {
-        content: '<div style="padding:10px; font-size:13px;"><strong>애월리 902-2</strong><br>자연녹지<br>매매가: 4.2억 원</div>',
-        latlng: new kakao.maps.LatLng(33.45660, 126.32021)
-      }
+      { title: '신엄리 2891-3', lat: 33.47676, lng: 126.35803 },
+      { title: '신엄리 2831', lat: 33.47445, lng: 126.35407 },
+      { title: '곽지리 791-4', lat: 33.44180, lng: 126.31541 },
+      { title: '월령리 1026', lat: 33.36672, lng: 126.22659 },
+      { title: '판포리 1589', lat: 33.36909, lng: 126.20766 },
+      { title: '북촌리 637-1', lat: 33.54789, lng: 126.69489 },
+      { title: '세화리 2416', lat: 33.32685, lng: 126.78393 }
     ];
 
-    // ✅ 마커 + InfoWindow 생성
-    for (var i = 0; i < positions.length; i++) {
-      (function(i) {
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: positions[i].latlng
-        });
+    positions.forEach(pos => {
+      var marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(pos.lat, pos.lng)
+      });
 
-        var infowindow = new kakao.maps.InfoWindow({
-          content: positions[i].content
-        });
+      var iwContent = '<div style="padding:10px; font-size:15px;">' + pos.title + '</div>';
+      var infowindow = new kakao.maps.InfoWindow({
+        content: iwContent
+      });
 
-        kakao.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map, marker);
-        });
-      })(i);
-    }
+      kakao.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+    });
   </script>
 </body>
 </html>
