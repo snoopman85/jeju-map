@@ -11,30 +11,47 @@
 <body>
   <div id="map"></div>
 
-  <!-- ✅ API 키는 반드시 본인의 것으로 바꿔주세요 -->
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
 
   <script>
     var mapContainer = document.getElementById('map');
     var mapOption = {
-      center: new kakao.maps.LatLng(33.47676, 126.35803),
-      level: 9
+      center: new kakao.maps.LatLng(33.4767616025224, 126.358036806761),
+      level: 10
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    // ✅ 마커 정보 리스트
     var positions = [
       {
-        content: '<div style="padding:10px; font-size:13px;"><strong>애월읍 신엄리 2891-3</strong><br>대지 200평<br>매매가: 5억 원</div>',
-        latlng: new kakao.maps.LatLng(33.47676, 126.35803)
+        content: '<div style="padding:10px; font-size:13px;"><strong>신엄리 2891-3</strong><br>제주시 애월읍<br>매매가: 5억</div>',
+        latlng: new kakao.maps.LatLng(33.4767616025224, 126.358036806761)
       },
       {
-        content: '<div style="padding:10px; font-size:13px;"><strong>애월읍 곽지리 791-4</strong><br>전망 좋은 땅<br>매매가: 4.5억 원</div>',
-        latlng: new kakao.maps.LatLng(33.44180, 126.31541)
+        content: '<div style="padding:10px; font-size:13px;"><strong>신엄리 2831</strong><br>제주시 애월읍<br>매매가: 4.8억</div>',
+        latlng: new kakao.maps.LatLng(33.4744560440337, 126.354075526073)
+      },
+      {
+        content: '<div style="padding:10px; font-size:13px;"><strong>곽지리 791-4</strong><br>제주시 애월읍<br>매매가: 4.5억</div>',
+        latlng: new kakao.maps.LatLng(33.4418008666527, 126.315416456229)
+      },
+      {
+        content: '<div style="padding:10px; font-size:13px;"><strong>월령리 1026</strong><br>제주시 한림읍<br>매매가: 3.9억</div>',
+        latlng: new kakao.maps.LatLng(33.366724492476, 126.226591414573)
+      },
+      {
+        content: '<div style="padding:10px; font-size:13px;"><strong>판포리 1589</strong><br>제주시 한경면<br>매매가: 4.3억</div>',
+        latlng: new kakao.maps.LatLng(33.3690975540748, 126.207660425432)
+      },
+      {
+        content: '<div style="padding:10px; font-size:13px;"><strong>북촌리 637-1</strong><br>제주시 조천읍<br>매매가: 6.0억</div>',
+        latlng: new kakao.maps.LatLng(33.5478957849701, 126.694895774594)
+      },
+      {
+        content: '<div style="padding:10px; font-size:13px;"><strong>세화리 2416</strong><br>서귀포시 표선면<br>매매가: 4.6억</div>',
+        latlng: new kakao.maps.LatLng(33.3268529003446, 126.783933153697)
       }
     ];
 
-    // ✅ 마커 + InfoWindow 생성
     for (var i = 0; i < positions.length; i++) {
       (function(i) {
         var marker = new kakao.maps.Marker({
@@ -49,7 +66,7 @@
         kakao.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map, marker);
         });
-      })(i); // 즉시 실행 함수로 클로저 생성
+      })(i);
     }
   </script>
 </body>
