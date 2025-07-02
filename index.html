@@ -2,88 +2,54 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>제주 부동산 위치 지도</title>
+  <title>제주 부동산 지도</title>
   <style>
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      width: 100%;
-      height: 100%;
-    }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    #map { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
   <div id="map"></div>
 
-  <!-- ✅ 카카오 지도 API 불러오기 (본인의 앱키로 변경 필요) -->
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
+  <!-- ✅ API 키는 반드시 본인의 것으로 바꿔주세요 -->
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
 
   <script>
-    // 1. 지도 생성
     var mapContainer = document.getElementById('map');
     var mapOption = {
-      center: new kakao.maps.LatLng(33.44, 126.55),
+      center: new kakao.maps.LatLng(33.47676, 126.35803),
       level: 9
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    // 2. 마커 위치 및 정보 정의
+    // ✅ 마커 정보 리스트
     var positions = [
       {
-        content: `
-          <div style="padding:10px; font-size:13px;">
-            <strong>애월읍 신엄리 2891-3</strong><br>
-            대지 200평 / 건물 40평<br>
-            매매가: 5억 원
-          </div>
-        `,
-        latlng: new kakao.maps.LatLng(33.476761062524, 126.358080867101)
+        content: '<div style="padding:10px; font-size:13px;"><strong>애월읍 신엄리 2891-3</strong><br>대지 200평<br>매매가: 5억 원</div>',
+        latlng: new kakao.maps.LatLng(33.47676, 126.35803)
       },
       {
-        content: `
-          <div style="padding:10px; font-size:13px;">
-            <strong>애월읍 신엄리 2831</strong><br>
-            전원주택 부지<br>
-            매매가: 3.8억 원
-          </div>
-        `,
-        latlng: new kakao.maps.LatLng(33.4744550414032, 126.354075256702)
-      },
-      {
-        content: `
-          <div style="padding:10px; font-size:13px;">
-            <strong>곽지리 791-4</strong><br>
-            곽지해수욕장 근처<br>
-            매매가: 6억 원
-          </div>
-        `,
-        latlng: new kakao.maps.LatLng(33.481008885627, 126.315416452629)
+        content: '<div style="padding:10px; font-size:13px;"><strong>애월읍 곽지리 791-4</strong><br>전망 좋은 땅<br>매매가: 4.5억 원</div>',
+        latlng: new kakao.maps.LatLng(33.44180, 126.31541)
       }
     ];
 
-    // 3. 마커 및 정보창 생성 + 클릭 이벤트 연결
+    // ✅ 마커 + InfoWindow 생성
     for (var i = 0; i < positions.length; i++) {
-      var marker = new kakao.maps.Marker({
-        map: map,
-        position: positions[i].latlng
-      });
+      (function(i) {
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: positions[i].latlng
+        });
 
-      var infowindow = new kakao.maps.InfoWindow({
-        content: positions[i].content
-      });
+        var infowindow = new kakao.maps.InfoWindow({
+          content: positions[i].content
+        });
 
-      // 마커 클릭 시 정보창 열기
-      kakao.maps.event.addListener(marker, 'click', makeClickHandler(infowindow, marker));
-    }
-
-    function makeClickHandler(iw, marker) {
-      return function () {
-        iw.open(map, marker);
-      };
+        kakao.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+        });
+      })(i); // 즉시 실행 함수로 클로저 생성
     }
   </script>
 </body>
