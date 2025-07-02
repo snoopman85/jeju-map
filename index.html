@@ -6,7 +6,8 @@
   <title>제주 부동산 입지 보고서</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Pretendard', sans-serif; line-height: 1.6; background: #fff; color: #222; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body { font-family: 'Pretendard', sans-serif; line-height: 1.8; background: #fff; color: #222; }
     section {
       min-height: 100vh;
       padding: 60px 10%;
@@ -22,74 +23,74 @@
     .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; }
     .cover h1 { font-size: 3rem; }
     .cover p { font-size: 1.2rem; color: #666; margin-top: 1rem; }
-    html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-p, li, h1, h2 {
-  line-height: 1.8;
-}
-@media screen and (max-width: 768px) {
-  body {
-    font-size: 18px;
-  }
-  h1 {
-    font-size: 2.2rem;
-  }
-  h2 {
-    font-size: 1.6rem;
-  }
-  p, li {
-    font-size: 1.1rem;
-  }
-}
-
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; font-size: 1rem; }
+    th { background-color: #f5f5f5; }
+    img.thumb { width: 100%; max-width: 400px; border-radius: 8px; margin-top: 10px; }
+    @media screen and (max-width: 768px) {
+      body { font-size: 18px; }
+      h1 { font-size: 2.2rem; }
+      h2 { font-size: 1.6rem; }
+      p, li, th, td { font-size: 1.1rem; }
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=514dacdcf76f7ad8b6f05f62739cc54c"></script>
 </head>
 <body>
 
-  <!-- Page 1: Cover -->
-  <section class="cover">
-    <h1>제주 부동산 입지 분석 보고서</h1>
-    <p>직영건축과 투자 관점에서의 가능성 진단</p>
-    <p>2025.07 | 작성자: 정선모</p>
+  <!-- Page 1: 제주 부동산 시장 현황 -->
+  <section>
+    <h2>0. 제주 부동산 시장 현황</h2>
+    <p>제주도는 최근 몇 년간 급격한 부동산 가격 상승을 겪었으나, 2023~2025년 사이 일부 지역은 조정기를 거치며 가격 안정화 양상을 보이고 있습니다. 특히 펜션 및 단독주택에 대한 수요는 여전히 유지되고 있으며, 수도권 자산가 및 은퇴자 중심의 투자 수요가 꾸준합니다.</p>
+    <canvas id="priceChart" width="600" height="300"></canvas>
+    <p style="margin-top: 2rem;">또한 제주도 펜션 사업의 수익률 및 공실률 변화도 중요한 판단 기준이 됩니다.</p>
+    <canvas id="pensionChart" width="600" height="300"></canvas>
   </section>
 
-  <!-- Page 2: 개요 -->
+  <!-- Page 2: 필지 요약 표 및 지도 -->
   <section>
-    <h2>1. 제주도 부동산 시장 개요</h2>
-    <p>제주도는 천혜의 자연환경과 관광자원으로 인해 주거 및 투자 수요가 꾸준히 발생하고 있는 지역입니다. 특히 제주시 서부권(애월, 한림 등)은 개발 수요가 높고 직영 건축 수요도 늘어나고 있습니다.</p>
-    <ul>
-      <li>관광+주거 복합 수요</li>
-      <li>지속적인 인프라 투자 (공항 확장, 도로망)</li>
-      <li>지역별 토지 가격 편차 큼</li>
-    </ul>
-  </section>
-
-  <!-- Page 3: 필지 정보 -->
-  <section>
-    <h2>2. 대상 필지 요약</h2>
-    <ul>
-      <li>신엄리 2891-3 (126.35803, 33.47676)</li>
-      <li>신엄리 2831 (126.35407, 33.47445)</li>
-      <li>곽지리 791-4 (126.31541, 33.44180)</li>
-      <li>월령리 1026 (126.22659, 33.36672)</li>
-      <li>판포리 1589 (126.20766, 33.36909)</li>
-      <li>북촌리 637-1 (126.69489, 33.54789)</li>
-      <li>세화리 2416 (126.78393, 33.32685)</li>
-    </ul>
-    <p>총 7필지(6개 권역)로 나뉘며, 각각 관광지 접근성 및 개발환경이 다릅니다.</p>
-  </section>
-
-  <!-- Page 4: 지도 시각화 -->
-  <section>
-    <h2>3. 지도 기반 입지 시각화</h2>
+    <h2>1. 대상 필지 요약</h2>
+    <table>
+      <thead>
+        <tr><th>지역</th><th>주소</th><th>좌표</th><th>면적</th><th>매매가</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>애월</td><td>신엄리 2891-3</td><td>33.47676, 126.35803</td><td>200평</td><td>5억</td></tr>
+        <tr><td>애월</td><td>신엄리 2831</td><td>33.47445, 126.35407</td><td>180평</td><td>4.5억</td></tr>
+        <tr><td>애월</td><td>곽지리 791-4</td><td>33.44180, 126.31541</td><td>250평</td><td>6억</td></tr>
+        <tr><td>한림</td><td>월령리 1026</td><td>33.36672, 126.22659</td><td>150평</td><td>3.8억</td></tr>
+        <tr><td>한경</td><td>판포리 1589</td><td>33.36909, 126.20766</td><td>180평</td><td>4억</td></tr>
+        <tr><td>조천</td><td>북촌리 637-1</td><td>33.54789, 126.69489</td><td>300평</td><td>7억</td></tr>
+        <tr><td>표선</td><td>세화리 2416</td><td>33.32685, 126.78393</td><td>220평</td><td>5.2억</td></tr>
+      </tbody>
+    </table>
     <div id="map" class="map-container"></div>
   </section>
 
-  <!-- Page 5: 개발 및 투자 방안 -->
+  <!-- Page 3: 매물별 지도 + 이미지 -->
+  <section>
+    <h2>2. 매물 상세 정보</h2>
+    <p>아래는 주요 매물 사진과 함께 위치를 시각화한 내용입니다.</p>
+    <ul>
+      <li>신엄리 2891-3<br><img src="thumb1.jpg" alt="신엄리 2891-3" class="thumb"></li>
+      <li>곽지리 791-4<br><img src="thumb2.jpg" alt="곽지리 791-4" class="thumb"></li>
+    </ul>
+  </section>
+
+  <!-- Page 4: 필지별 분석 -->
+  <section>
+    <h2>3. 필지별 분석 요약</h2>
+    <table>
+      <thead><tr><th>필지</th><th>지목</th><th>용도지역</th><th>접근성</th><th>적합한 개발방향</th></tr></thead>
+      <tbody>
+        <tr><td>신엄리 2891-3</td><td>대</td><td>계획관리</td><td>주도로 인접</td><td>단독주택</td></tr>
+        <tr><td>곽지리 791-4</td><td>전</td><td>자연녹지</td><td>해안 접근 용이</td><td>펜션단지</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Page 5: 개발 및 투자 전략 -->
   <section>
     <h2>4. 개발/투자 활용 방안</h2>
     <ul>
@@ -112,6 +113,42 @@ p, li, h1, h2 {
   </section>
 
   <script>
+    const ctx1 = document.getElementById('priceChart');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['2020', '2021', '2022', '2023', '2024'],
+        datasets: [{
+          label: '제주도 부동산 가격지수',
+          data: [98, 105, 112, 108, 110],
+          borderColor: 'rgba(75, 192, 192, 1)',
+          fill: false
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'top' } } }
+    });
+
+    const ctx2 = document.getElementById('pensionChart');
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['2020', '2021', '2022', '2023', '2024'],
+        datasets: [
+          {
+            label: '평균 수익률 (%)',
+            data: [7.2, 8.1, 6.9, 6.3, 6.5],
+            backgroundColor: 'rgba(153, 102, 255, 0.7)'
+          },
+          {
+            label: '평균 공실률 (%)',
+            data: [22, 18, 25, 27, 26],
+            backgroundColor: 'rgba(255, 99, 132, 0.7)'
+          }
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'top' } } }
+    });
+
     var container = document.getElementById('map');
     var options = {
       center: new kakao.maps.LatLng(33.448, 126.33),
@@ -136,9 +173,7 @@ p, li, h1, h2 {
       });
 
       var iwContent = '<div style="padding:10px; font-size:15px;">' + pos.title + '</div>';
-      var infowindow = new kakao.maps.InfoWindow({
-        content: iwContent
-      });
+      var infowindow = new kakao.maps.InfoWindow({ content: iwContent });
 
       kakao.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map, marker);
